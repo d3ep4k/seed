@@ -21,6 +21,7 @@ import java.security.SecureRandom;
 import java.math.BigInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.dbutils.*;
 
 /**
  *
@@ -43,6 +44,22 @@ public class ImageUploader implements UploadListener {
           //    		"/callmystyle/images/"+ random + "." + event.getFileName().split("\\.")[1], event.getUploadedFile())
           //       .withCannedAcl(CannedAccessControlList.PublicRead));
 
+      QueryRunner run = new QueryRunner( ds );
+      try{
+          // Execute the SQL update statement and return the number of
+          // inserts that were made
+          int inserts = run.update( "INSERT INTO Person (name,height) VALUES (?,?)",
+                                    "John Doe", 1.82 );
+          // The line before uses varargs and autoboxing to simplify the code
+
+          // Now it's time to rise to the occation...
+          int updates = run.update( "UPDATE Person SET height=? WHERE name=?",
+                                    2.05, "John Doe" );
+          // So does the line above
+      }catch(SQLException sqle) {
+          // Handle it
+      }
+      
 			return "{\"success\":\""+random+"\"}";
     }
 
